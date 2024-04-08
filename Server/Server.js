@@ -4,6 +4,7 @@ const colors = require("colors")
 const app = express();
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const userRouter = require("./Routes/userAuthRoutes");
 
 // Some Middlewares...
 dotenv.config();
@@ -23,3 +24,4 @@ app.listen(1000,() => {
 })
 
 // Application Routes ...
+app.use("/api",userRouter);
