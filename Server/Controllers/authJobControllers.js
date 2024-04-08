@@ -13,14 +13,48 @@ const creatingJob = async (req, res) => {
   }
 };
 
-const getAllJob = async (req, res) => {
-  try {
-    const AllJobs = await Job.find();
-    res.status(200).json(AllJobs);
+
+const getAllJob = async (req, res, next) => {
+    try {
+      const jobPosition = req.query.jobPosition || "";
+      const skills = req.query.skills;
+  
+      let filter = {};
+      let formattedSkills;
+      if (skills) {
+          formattedSkills = skills.split(",");
+  
+          if (formattedSkills) {
+              const regexArray = formattedSkills.map(
+                  (value) => new RegExp(value, "i")
+              );
+  
+              filter = {
+                  skills: { $in: regexArray },
+              };
+          }
+      }
+  
+      const jobList = await Job.find(
+          {
+            jobPosition: { $regex: jobPosition, $options: "i" },
+              ...filter,
+          },
+          {
+              jobPosition: 1,
+              salary: 1,
+              addLogo: 1,
+              location: 1,
+              skills: 1,
+              companyName: 1,
+          }
+      );
+  
+      res.json({ data: jobList });
   } catch (error) {
-    res.status(400).json({ message: "Bad Request..." });
+      res.status(402).json({message:"Bad Request..."})
   }
-};
+  };
 
 const getJobById = async (req, res) => {
   try {
@@ -33,9 +67,40 @@ const getJobById = async (req, res) => {
   }
 };
 
-const updateJobDetailsById = () => {
-  const jobId = req.params.jobId;
-  
+const updateJobDetailsById = async (req, res) => {
+  try {
+    const jobId = req.params.jobId;
+    if (!jobId) {
+      return res.status(400).json({ message: "Bad Request..." });
+    }
+
+    const {
+      companyName,
+      jobPosition,
+      salary,
+      jobType,
+      location,
+      jobDescription,
+      skills,
+    } = req.body;
+    const updatedJob = await Job.updateOne(
+      { _id: jobId },
+      {
+        $set: {
+          companyName,
+          jobPosition,
+          salary,
+          jobType,
+          location,
+          jobDescription,
+          skills,
+        },
+      }
+    );
+    res.json({ message: "Job has been updated...", updatedJob });
+  } catch (error) {
+    res.status(400).json({ message: "Can't update due to internal issue..." });
+  }
 };
 
 module.exports = {
@@ -56,3 +121,6 @@ module.exports = {
 //     location,
 //     jobType,
 //   } = req.body;
+
+
+    
