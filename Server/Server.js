@@ -5,6 +5,7 @@ const app = express();
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const userRouter = require("./Routes/userAuthRoutes");
+const jobRouter = require("./Routes/jobRoutes");
 
 // Some Middlewares...
 dotenv.config();
@@ -25,3 +26,4 @@ app.listen(1000,() => {
 
 // Application Routes ...
 app.use("/api",userRouter);
+app.use("/api/auth",jobRouter)
