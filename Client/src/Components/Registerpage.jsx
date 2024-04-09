@@ -1,5 +1,33 @@
 import icon from "../Asset/jobportal.png"
+import { useState } from "react";
+import { registerUser} from "../Apis/auth";
+
 const Registerpage = () => {
+  const [formData , setFormData] = useState({
+    username:"",
+    email:"",
+    password:""
+  })
+
+  console.log(formData)
+
+  const handleFormChange = (e) => {
+    setFormData({...formData,[e.target.name]:e.target.value})
+  }
+
+  const handleSubmit = async(e) =>{
+    e.preventDefault();
+    if (
+      !formData.username ||
+      !formData.email ||
+      !formData.password
+    ) {
+      alert("Fields can not be empty");
+    }
+    const response = await registerUser({...formData});
+    console.log(response);
+  }
+
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -15,7 +43,7 @@ const Registerpage = () => {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" action="#" method="POST">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label
                 htmlFor="email"
@@ -25,9 +53,10 @@ const Registerpage = () => {
               </label>
               <div className="mt-2">
                 <input
-                  id="username"
                   name="username"
-                  type="username"
+                  type="text"
+                  onChange={handleFormChange}
+                  value={formData.username}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
@@ -44,9 +73,10 @@ const Registerpage = () => {
               </div>
               <div className="mt-2">
                 <input
-                  id="email"
                   name="email"
                   type="email"
+                  onChange={handleFormChange}
+                  value={formData.email}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
@@ -63,7 +93,8 @@ const Registerpage = () => {
               </div>
               <div className="mt-2">
                 <input
-                  id="password"
+                  value={formData.password}
+                  onChange={handleFormChange}
                   name="password"
                   type="password"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"

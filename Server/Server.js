@@ -6,11 +6,13 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const userRouter = require("./Routes/userAuthRoutes");
 const jobRouter = require("./Routes/jobRoutes");
+const cors = require("cors")
 const cookieParser = require("cookie-parser");
 // configuring dotenv files
 dotenv.config();
 
 // Some Middlewares...
+app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
