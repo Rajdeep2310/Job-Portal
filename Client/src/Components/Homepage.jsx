@@ -1,6 +1,10 @@
-
+import Headers from "./Headers"
 export default function Homepage() {
   return (
-    <div className="text-3xl font-bold underline">Homepage</div>
+    <>
+      <Headers/>
+      <div className="text-3xl font-bold underline">Homepage</div>
+    </>
+    
   )
 }

@@ -9,7 +9,7 @@ const creatingJob = async (req, res) => {
     const job = await Job.create(req.body);
     return res.status(200).json(job);
   } catch (error) {
-    res.status(402).json({ message: "Job not Created..." });
+    res.status(400).json({ message: "Job not Created..." });
   }
 };
 

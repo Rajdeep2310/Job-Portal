@@ -16,12 +16,10 @@ const jobSchema = new mongoose.Schema({
     },
     skills:{
         type:Array,
-        required: true
     },
     salary:{
         type:Number,
-        required: true,
-    },
+           },
     location:{
         type:String,
         required: true,
