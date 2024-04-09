@@ -1,5 +1,6 @@
 import axios from "axios";
 
+
 export const createJobPost = async (JobPostPayload) => {
     try {
         const reqUrl = `http://localhost:1000/api/auth/createJob`;
