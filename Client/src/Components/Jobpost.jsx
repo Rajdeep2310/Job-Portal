@@ -1,29 +1,55 @@
 import styles from "./Styles/Jobpost.module.css";
-import { useState, useEffect} from "react";
-import { createJobPost} from "../Apis/Job";
+import { useState, useEffect } from "react";
+import { createJobPost , updateJob  } from "../Apis/Job";
+import { DEFAULT_SKILLS } from  "../Utils/Constants";
+import { useLocation } from "react-router-dom";
 
-const Jobpost = () =>  {
-    const [formData , setFormData] = useState({
-        companyName:"",
-        jobDescription:"",
-        jobPosition:"",
-        salary:"",
-        location:"",
-        jobType:"",
-        skills:[],
-    })
-    const handleFormChange = (e) => {
-        setFormData({...formData,[e.target.name]:e.target.value})
+const Jobpost = () => {
+  const { state } = useLocation();
+  const [stateData] = useState(state?.jobDetails);
+  console.log(stateData)
+  const [formData, setFormData] = useState({
+    companyName: ""  || stateData?.companyName,
+    jobDescription: ""  || stateData?.jobDescription,
+    jobPosition: ""  || stateData?.jobPosition,
+    salary: ""  || stateData?.salary,
+    location: ""  || stateData?.location,
+    jobType: "" || stateData?.jobType,
+    skills: stateData?.skills || [],
+  });
+  const handleFormChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (state?.edit) {
+      updateJob(state?.id, formData);
+      return;
+  }
+    await createJobPost(formData);
+  };
+
+  const addSkills = (event) => {
+    const skill = event.target.value;
+    const actualSkills = formData.skills;
+    const filteredSkills = actualSkills.filter((element) => element == skill);
+    if (!filteredSkills.length) {
+      const updatedSkills = [...formData.skills, skill];
+      setFormData({ ...formData, skills: updatedSkills });
     }
+  };
 
-    const handleSubmit = async(e) => {
-        e.preventDefault();
-        await createJobPost(formData);
-    }
+  const removeSkill = (skill) => {
+    const actualSkills = formData.skills;
+    const filteredSkills = actualSkills.filter((element) => element !== skill);
 
-    useEffect(() => {
-        console.log(formData);
-    }, [formData]);
+    setFormData({ ...formData, skills: filteredSkills });
+  };
+
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
   return (
     <div className={styles.container}>
       <h1 className={styles.h1}>Add job description</h1>
@@ -74,8 +100,12 @@ const Jobpost = () =>  {
           <label className={styles.label} htmlFor="jobType">
             Job Type:
           </label>
-          <select className={styles.select} name="jobType" value={formData.jobType}
-            onChange={handleFormChange}>
+          <select
+            className={styles.select}
+            name="jobType"
+            value={formData.jobType}
+            onChange={handleFormChange}
+          >
             <option value="">Select job type</option>
             <option value="Full-time">Full-time</option>
             <option value="Part-time">Part-time</option>
@@ -113,19 +143,36 @@ const Jobpost = () =>  {
           <label className={styles.label} htmlFor="skills">
             Skills:
           </label>
-          <input
+          {/* <input
             className={styles.input}
             type="text"
             name="skills"
             placeholder="skills"
             value={formData.skills}
             onChange={handleFormChange}
-          />
+          /> */}
+          <select className={styles.input} name="skills" onChange={addSkills}>
+            <option disabled selected>
+              Please select skills:
+            </option>
+            {DEFAULT_SKILLS.map((element) => (
+              <option key={element}>{element}</option>
+            ))}
+          </select>
+        </div>
+        <div>
+          {formData?.skills?.map((element) => (
+            <span key={element}>{element}&nbsp;
+              <button onClick={() => removeSkill(element)}>X</button>
+            </span>
+          ))}
         </div>
       </div>
-      <button className={styles.add} onClick={handleSubmit}>+ Add Job</button>
+      <button className={styles.add} onClick={handleSubmit}>
+      {state?.edit ? "Edit Job" : "+ Add Job "}
+      </button>
       <button className={styles.cancel}>Cancel</button>
     </div>
   );
-}
+};
 export default Jobpost;

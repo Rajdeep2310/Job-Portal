@@ -23,6 +23,19 @@ export const getJobDetailsById = async (jobId) => {
     }
 };
 
+export const updateJob = async(jobPostId , updatedFormData) => {
+    try{
+        const reqUrl =`${BACKEND_URL}/update/${jobPostId}`
+        const token = localStorage.getItem("token");
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        const response = await axios.put(reqUrl, updatedFormData);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        // toast something went wrong please try after sometime
+    }
+}
+
 
 export const getAllJobPost = async (filter) => {
     try {

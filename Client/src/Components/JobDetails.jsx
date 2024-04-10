@@ -63,6 +63,7 @@ const JobDetails = () => {
                         </div>
                     </div>
                     <div>
+                        {/* From this onClick the data is transferred to JobPost component so thath the form data is autofilled at the time of edit a job and there geolocation is used to get this state from here to there. */}
                         <button
                             onClick={() => {
                                 navigate("/job-post", {
