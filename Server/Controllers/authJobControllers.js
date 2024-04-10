@@ -50,7 +50,7 @@ const getAllJob = async (req, res, next) => {
           }
       );
   
-      res.json({ data: jobList });
+      res.json(jobList);
   } catch (error) {
       res.status(402).json({message:"Bad Request..."})
   }
@@ -60,7 +60,6 @@ const getJobById = async (req, res) => {
   try {
     const jobId = req.params.jobId;
     const jobDetails = await Job.findById(jobId);
-    console.log(jobDetails);
     res.status(200).json(jobDetails);
   } catch (error) {
     res.status(400).json({ message: "Bad Request..." });

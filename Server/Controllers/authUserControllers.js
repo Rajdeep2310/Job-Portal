@@ -8,9 +8,9 @@ const testApi = (req,res) =>{
 
 const userRegister = async(req,res) =>{
     try{
-        const { username , email, password } = req.body;
+        const { username , email, mobile ,password } = req.body;
         const hashedPassword = bcrypt.hashSync(password,10);
-        const newUser = new User({username , email ,password:hashedPassword})
+        const newUser = new User({username , email, mobile ,password:hashedPassword})
         await newUser.save();
         res.status(200).json({message:"User created..."})
     }catch(error){
@@ -23,12 +23,12 @@ const userLogin = async(req,res,next) =>{
         const validUser = await User.findOne({email:email});
         // Finding User exists or not:
         if(!validUser) {
-            return res.status(402).json({message:"Not a valid user..."})
+            return res.status(400).json({message:"Not a valid user..."})
         }
         const validPassword = bcrypt.compareSync(password,validUser.password)
 
         if(!validPassword){
-            return res.status(402).json({message:"Wrong Credentials..."})
+            return res.status(400).json({message:"Wrong Credentials..."})
         }
         // creating token here:
         const token = jwt.sign({id: validUser._id}, process.env.JWT_SECRET)

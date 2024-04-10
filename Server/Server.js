@@ -35,3 +35,7 @@ app.listen(1000, () => {
 // Application Routes ...
 app.use("/api", userRouter);
 app.use("/api/auth", jobRouter);
+
+app.use("/*",(req,res) =>{
+  res.status(400).json({Message:"No Such route is present..."})
+})
