@@ -14,6 +14,6 @@ jobRouter.get("/health", testApi);
 jobRouter.post("/createJob", verifyToken, creatingJob);
 jobRouter.put("/update/:jobId", verifyToken, updateJobDetailsById);
 jobRouter.get("/getAll", verifyToken, getAllJob);
-jobRouter.get("/getJob/:jobId", verifyToken, getJobById);
+jobRouter.get("/getJob/:jobId", getJobById);
 
 module.exports = jobRouter;
