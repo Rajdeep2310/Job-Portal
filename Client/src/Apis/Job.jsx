@@ -39,7 +39,7 @@ export const updateJob = async(jobPostId , updatedFormData) => {
 
 export const getAllJobPost = async (filter) => {
     try {
-        const reqUrl = `${BACKEND_URL}/getAll?jobPosition=${filter?.title}&skills=${filter?.skills}`;
+        const reqUrl = `${BACKEND_URL}/getAll?jobPosition=${filter?.jobPosition}&skills=${filter?.skills}`;
         const response = await axios.get(reqUrl);
         return response.data;
     } catch (error) {

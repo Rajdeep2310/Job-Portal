@@ -4,6 +4,7 @@ import Registerpage from "./Pages/Registerpage";
 import Homepage from "./Pages/Homepage"
 import Jobdetailspage from "./Pages/Jobdetailspage";
 import Jobpostpage from "./Pages/jobpostpage";
+import Protected from "./Components/Protected";
 const App = () =>{
   return(
     <BrowserRouter>
@@ -12,7 +13,7 @@ const App = () =>{
         <Route path="/login" element={<Loginpages/>}/>
         <Route path="/register" element={<Registerpage/>}/>
         <Route path="/job-details/:id" element={<Jobdetailspage/>} />
-        <Route path="/job-post" element={<Jobpostpage/>}/>
+        <Route path="/job-post" element={<Protected component={Jobpostpage}/>}/>
       </Routes>
     </BrowserRouter>
   )

@@ -175,4 +175,7 @@ const Jobpost = () => {
     </div>
   );
 };
+
 export default Jobpost;
+
+
